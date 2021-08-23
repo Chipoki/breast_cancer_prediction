@@ -1,4 +1,5 @@
 import data_preprocessing as dp
+import summarizer
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -31,21 +32,8 @@ if __name__ == '__main__':
     model_rf = RandomForestClassifier()
     model_rf.fit(x_train, y_train)
 
-    # trained logistic regression model testing
-    y_prediction_lr = model_lr.predict(x_test)
-    print("----------------\nLogistic Regression: \n\n", "r2 score: {}, accuracy score: {}".
-          format(r2_score(y_test, y_prediction_lr), accuracy_score(y_test, y_prediction_lr)),
-          '\n\n', "confusion matrix:", '\n\n', confusion_matrix(y_test, y_prediction_lr), '\n----------------\n\n')
-
-    # trained svm model testing
-    y_prediction_svm = model_svm.predict(x_test)
-    print("----------------\nSVM: \n\n", "r2 score: {}, accuracy score: {}".
-          format(r2_score(y_test, y_prediction_svm), accuracy_score(y_test, y_prediction_svm)), '\n\n',
-          "confusion matrix:", '\n\n', confusion_matrix(y_test, y_prediction_svm), '\n----------------\n\n')
-
-    # trained rf model testing
-    y_prediction_rf = model_rf.predict(x_test)
-    print("----------------\nRandom Forest: \n\n", "r2 score: {}, accuracy score: {}".
-          format(r2_score(y_test, y_prediction_rf), accuracy_score(y_test, y_prediction_rf)), '\n\n',
-          "confusion matrix:", '\n\n', confusion_matrix(y_test, y_prediction_rf), '\n----------------\n\n')
+    # trained models testing
+    summarizer = summarizer.Summarizer(data_preprocessor)
+    models = [model_lr, model_svm, model_rf]
+    summarizer.summary_printer(models)
 
