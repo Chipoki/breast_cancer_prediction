@@ -6,7 +6,9 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import r2_score, accuracy_score, confusion_matrix
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
 
 if __name__ == '__main__':
 
@@ -20,20 +22,32 @@ if __name__ == '__main__':
     # data acquisition
     x_train, x_test, y_train, y_test = data_preprocessor.get_processed_data()
 
-    # logistic regression training
+    # logistic regression model training
     model_lr = LogisticRegression(random_state=0)
     model_lr.fit(x_train, y_train)
 
     # svm classification model training
-    model_svm = SVC()
+    model_svm = SVC(kernel="rbf", random_state=0)
     model_svm.fit(x_train, y_train)
 
+    # decision tree model training
+    model_dt = DecisionTreeClassifier(criterion="entropy", random_state=0)
+    model_dt.fit(x_train, y_train)
+
     # random forest model training
-    model_rf = RandomForestClassifier()
+    model_rf = RandomForestClassifier(criterion="entropy", random_state=0)
     model_rf.fit(x_train, y_train)
+
+    # naive bayes model training
+    model_nb = GaussianNB()
+    model_nb.fit(x_train, y_train)
+
+    # knn model training
+    model_knn = KNeighborsClassifier(n_neighbors=10, p=2, metric='minkowski')
+    model_knn.fit(x_train, y_train)
 
     # trained models testing
     summarizer = summarizer.Summarizer(data_preprocessor)
-    models = [model_lr, model_svm, model_rf]
-    summarizer.summary_printer(models)
+    models = [model_lr, model_svm, model_dt, model_rf, model_knn, model_nb]
+    summarizer.model_testing_printer(models)
 
